@@ -5,45 +5,52 @@ import numpy as np
 
 # Page configuration
 st.set_page_config(
-    page_title="Model Inference Console",
-    page_icon="⚙️",
-    layout="wide"  # Optimized for standardized technical dashboards
+    page_title="Inference Canvas",
+    page_icon="✨",
+    layout="centered"
 )
 
-# Custom CSS for standard technical UI (Slate / Indigo theme)
+# Custom CSS for Zen Minimalist Aesthetic
 st.markdown("""
     <style>
-        /* Base system font standardization */
-        html, body, [class*="css"] {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        /* Sleek Obsidian Canvas */
+        .stApp {
+            background-color: #0b0f19;
         }
         
-        /* Standardized Technical Card */
-        .tech-card {
-            background-color: #ffffff;
-            padding: 24px;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-            margin-bottom: 20px;
+        /* Centered Zen Container */
+        .zen-card {
+            background: #111625;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            margin-bottom: 25px;
         }
         
-        /* Dark-mode compatible styling wrapper */
-        @media (prefers-color-scheme: dark) {
-            .tech-card {
-                background-color: #1e293b;
-                border-color: #334155;
-            }
+        /* Floating Glowing Ring for the output */
+        .score-ring {
+            display: inline-block;
+            padding: 20px 40px;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
+            border: 1px solid #6366f1;
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.25);
+            margin: 20px 0;
         }
         
-        /* Code block decoration */
-        .metric-header {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #64748b;
+        /* Clean, refined typography */
+        h1, h2, h3, p, label {
+            color: #f1f5f9 !important;
+            font-family: system-ui, -apple-system, sans-serif !important;
+        }
+        
+        .accent-text {
+            color: #818cf8 !important;
             font-weight: 600;
-            margin-bottom: 8px;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -58,122 +65,80 @@ def load_model():
 try:
     model = load_model()
 except FileNotFoundError:
-    st.error("⚠️ File Not Found: `model.pkl` must exist in the root execution directory.")
+    st.error("⚠️ `model.pkl` not found! Please ensure the file is in the same directory as `app.py`.")
     st.stop()
 
-# --- SIDEBAR CONTROL PANEL ---
-with st.sidebar:
-    st.image("https://img.icons8.com/fluency/96/control-panel.png", width=64)
-    st.title("Inference Engine")
-    st.caption("v1.0.0 • Production Environment")
-    st.markdown("---")
+# --- HEADER SECTION ---
+st.markdown("<div style='text-align: center; margin-top: 20px;'>", unsafe_allow_html=True)
+st.markdown("<p class='accent-text'>🔮 Real-Time Machine Learning</p>", unsafe_allow_html=True)
+st.markdown("<h1 style='font-size: 2.3rem; font-weight: 300; margin-top: -5px;'>Inference Canvas</h1>", unsafe_allow_html=True)
+st.markdown("<p style='color: #64748b !important; font-size: 0.95rem; max-width: 450px; margin: 0 auto 30px auto;'>A quiet, reactive playground for predicting student scores instantly as habits shift.</p>", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
+
+# --- INPUT SECTION (Single Zen Card) ---
+st.markdown('<div class="zen-card">', unsafe_allow_html=True)
+
+# Sliding inputs map directly to model parameters[cite: 1]
+hours_studied = st.slider(
+    "Study Intensity (Hours/Day)", 
+    min_value=0.0, 
+    max_value=24.0, 
+    value=5.0, 
+    step=0.5
+)
+
+sleep_hours = st.slider(
+    "Sleep Duration (Hours/Night)", 
+    min_value=0.0, 
+    max_value=24.0, 
+    value=7.0, 
+    step=0.5
+)
+
+attendance_percent = st.slider(
+    "Classroom Attendance (%)", 
+    min_value=0.0, 
+    max_value=100.0, 
+    value=85.0, 
+    step=1.0
+)
+
+previous_scores = st.slider(
+    "Previous Academic Score", 
+    min_value=0.0, 
+    max_value=100.0, 
+    value=75.0, 
+    step=1.0
+)
+
+st.markdown('</div>', unsafe_allow_html=True) # Close Zen Card
+
+# --- REAL-TIME CALCULATION PIPELINE ---
+# Construct data payload mirroring expected features[cite: 1]
+input_data = pd.DataFrame([{
+    "hours_studied": hours_studied,
+    "sleep_hours": sleep_hours,
+    "attendance_percent": attendance_percent,
+    "previous_scores": previous_scores
+}])
+
+try:
+    # Model generates instant predictions dynamically without button-clicks[cite: 1]
+    prediction = model.predict(input_data)[0]
     
-    st.subheader("Configuration Parameters")
+    # --- OUTPUT DISPLAY ---
+    st.markdown("<div style='text-align: center; margin-top: 10px;'>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #94a3b8 !important; font-size: 0.9rem; margin-bottom: 0;'>ESTIMATED OUTCOME</p>", unsafe_allow_html=True)
     
-    # Standardized system inputs based on model training features[cite: 1]
-    hours_studied = st.slider(
-        "Hours Studied", 
-        min_value=0.0, 
-        max_value=24.0, 
-        value=5.0, 
-        step=0.5,
-        help="Aggregated daily training study hours."
+    # The elegant centered score capsule
+    st.markdown(
+        f"<div class='score-ring'><h1 style='margin:0; font-size: 3.5rem; font-weight: 200; background: linear-gradient(to right, #ffffff, #a5b4fc); -webkit-background-clip: text; -webkit-text-fill-color: transparent;'>{prediction:.1f}%</h1></div>", 
+        unsafe_allow_html=True
     )
     
-    sleep_hours = st.slider(
-        "Sleep Hours", 
-        min_value=0.0, 
-        max_value=24.0, 
-        value=7.0, 
-        step=0.5,
-        help="Rest and recovery period metrics."
-    )
+    # Simple, high-contrast, non-distracting progress bar
+    st.progress(min(max(float(prediction) / 100.0, 0.0), 1.0))
+    st.markdown("</div>", unsafe_allow_html=True)
     
-    attendance_percent = st.slider(
-        "Attendance Index (%)", 
-        min_value=0.0, 
-        max_value=100.0, 
-        value=85.0, 
-        step=1.0,
-        help="Classroom attendance percentage metrics."
-    )
-    
-    previous_scores = st.number_input(
-        "Historic Baseline Score", 
-        min_value=0.0, 
-        max_value=100.0, 
-        value=75.0, 
-        step=1.0,
-        help="Prior evaluation scores."
-    )
-    
-    st.markdown("---")
-    execute_inference = st.button("Run Inference Pipeline", type="primary", use_container_width=True)
-
-# --- MAIN WORKSPACE ---
-st.header("⚙️ KNN Model Inference Workspace")
-st.markdown("Standardized interface for system deployment and real-time inference prediction.")
-
-# Tabbed Layout for modular data presentation
-tab_inference, tab_metadata = st.tabs(["🚀 Real-time Prediction", "📋 Model Metadata"])
-
-with tab_inference:
-    col_input, col_output = st.columns([1, 1], gap="large")
-    
-    with col_input:
-        st.markdown('<div class="tech-card">', unsafe_allow_html=True)
-        st.markdown('<div class="metric-header">Active Payload Configuration</div>', unsafe_allow_html=True)
-        
-        # Displaying currently configured payload as a standardized JSON structure
-        payload = {
-            "hours_studied": hours_studied,
-            "sleep_hours": sleep_hours,
-            "attendance_percent": attendance_percent,
-            "previous_scores": previous_scores
-        }
-        st.json(payload)
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-    with col_output:
-        st.markdown('<div class="tech-card">', unsafe_allow_html=True)
-        st.markdown('<div class="metric-header">Prediction Registry Pipeline</div>', unsafe_allow_html=True)
-        
-        if execute_inference:
-            input_data = pd.DataFrame([payload])
-            
-            with st.spinner("Executing calculations..."):
-                try:
-                    prediction = model.predict(input_data)[0]
-                    
-                    st.metric(
-                        label="Inferred System Metric Output",
-                        value=f"{prediction:.2f}%",
-                        delta=f"{(prediction - previous_scores):+.2f}% vs Baseline"
-                    )
-                    
-                    st.progress(min(max(float(prediction) / 100.0, 0.0), 1.0))
-                    st.success("✔ Pipeline execution completed with code 0.")
-                    
-                except Exception as e:
-                    st.error(f"Inference execution failed: {str(e)}")
-        else:
-            st.info("💡 Adjust system parameters in the sidebar and select 'Run Inference Pipeline' to process.")
-            
-        st.markdown('</div>', unsafe_allow_html=True)
-
-with tab_metadata:
-    st.markdown('<div class="tech-card">', unsafe_allow_html=True)
-    st.markdown('<div class="metric-header">Model Topology & Serialization Summary</div>', unsafe_allow_html=True)
-    
-    # Display standardized metadata extracted from pickle structures[cite: 1]
-    col_meta1, col_meta2 = st.columns(2)
-    with col_meta1:
-        st.markdown(f"**Model Class:** `{type(model).__name__}`")
-        st.markdown(f"**Scikit-Learn Version:** `1.6.1`[cite: 1]")
-        st.markdown(f"**Metric Type:** `Minkowski`[cite: 1]")
-    with col_meta2:
-        st.markdown(f"**Neighbor Nodes ($k$):** `{model.n_neighbors if hasattr(model, 'n_neighbors') else 'N/A'}`[cite: 1]")
-        st.markdown(f"**Feature Dimension Count:** `{model.n_features_in_ if hasattr(model, 'n_features_in_') else 'N/A'}`[cite: 1]")
-        st.markdown(f"**Registered Features:** `{', '.join(model.feature_names_in_) if hasattr(model, 'feature_names_in_') else 'N/A'}`[cite: 1]")
-        
-    st.markdown('</div>', unsafe_allow_html=True)
+except Exception as e:
+    st.error(f"Inference pipeline paused: {str(e)}")
