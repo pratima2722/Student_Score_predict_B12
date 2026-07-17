@@ -5,92 +5,97 @@ import numpy as np
 
 # Page configuration
 st.set_page_config(
-    page_title="Fairy Study Garden",
-    page_icon="🌸",
+    page_title="Study Land • Sweet Predictor",
+    page_icon="🍬",
     layout="centered"
 )
 
-# Custom CSS for Floral Cartoon Vibes & Bouncy Animations
+# Custom CSS for 3D Claymorphism, Soft Inflated Borders, and Bouncy Animations
 st.markdown("""
     <style>
-        /* Pastel floral sky background */
+        /* Creamy pastel sky background */
         .stApp {
-            background: linear-gradient(135deg, #FFF0F5 0%, #E6E6FA 50%, #FFF9E6 100%);
+            background: linear-gradient(180deg, #FFF5E4 0%, #FFE3E3 100%);
         }
         
-        /* Cute Cartoon Flower Card */
-        .flower-card {
-            background-color: rgba(255, 255, 255, 0.95);
+        /* 3D Claymorphic Card: Soft, puffed-up plastic appearance */
+        .clay-card {
+            background-color: #FFFFFF;
             padding: 30px;
-            border-radius: 28px;
-            border: 4px dashed #FFB7B2;
-            box-shadow: 0px 10px 25px rgba(255, 183, 178, 0.4);
-            margin-bottom: 25px;
-            transition: transform 0.3s ease;
+            border-radius: 30px;
+            border: 4px solid #FFD1D1;
+            /* Inner light + heavy soft outer shadow creates a squishy 3D look */
+            box-shadow: 
+                inset 4px 4px 0px rgba(255, 255, 255, 0.8),
+                inset -4px -4px 0px rgba(0, 0, 0, 0.03),
+                8px 12px 0px 0px #FFD1D1;
+            margin-bottom: 30px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
-        .flower-card:hover {
-            transform: translateY(-3px);
+        /* Interactive scale-up when hovering over the card */
+        .clay-card:hover {
+            transform: scale(1.02) translateY(-5px);
+            box-shadow: 
+                inset 4px 4px 0px rgba(255, 255, 255, 0.8),
+                inset -4px -4px 0px rgba(0, 0, 0, 0.03),
+                12px 18px 0px 0px #FFD1D1;
         }
         
-        /* Puffy 3D Bouncing Button */
+        /* 3D "Squishy Toy" Button */
         div.stButton > button {
-            background: linear-gradient(135deg, #FFB7B2 0%, #FFDAC1 100%) !important;
-            color: #5D4037 !important;
-            border: 3px solid #FF9AA2 !important;
-            border-radius: 30px !important;
+            background: linear-gradient(135deg, #FF9494 0%, #FFB4B4 100%) !important;
+            color: #FFFFFF !important;
+            border: 4px solid #FF7B7B !important;
+            border-radius: 25px !important;
             padding: 15px 30px !important;
-            font-size: 1.25rem !important;
+            font-size: 1.2rem !important;
             font-weight: 900 !important;
-            box-shadow: 0px 8px 0px 0px #FF9AA2, 0px 15px 20px rgba(255, 154, 162, 0.3) !important;
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-            width: 100%;
+            text-transform: uppercase !important;
+            letter-spacing: 1px !important;
+            /* Deep button base shadow */
+            box-shadow: 0px 8px 0px 0px #FF7B7B, 0px 15px 20px rgba(255, 123, 123, 0.3) !important;
+            transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+            margin-bottom: 15px;
         }
         
-        div.stButton > button:hover {
-            transform: scale(1.02) translateY(-2px) !important;
-            background: linear-gradient(135deg, #FF9AA2 0%, #FFB7B2 100%) !important;
-        }
-
+        /* Physical press action */
         div.stButton > button:active {
             transform: translateY(6px) !important;
-            box-shadow: 0px 2px 0px 0px #FF9AA2 !important;
+            box-shadow: 0px 2px 0px 0px #FF7B7B, 0px 5px 10px rgba(255, 123, 123, 0.2) !important;
         }
 
-        /* Floating Flower Result Container */
-        .bloom-result-card {
-            background: linear-gradient(135deg, #EBFCE5 0%, #FFF3F8 100%);
-            border: 4px solid #B5EAD7;
+        /* Claymorphic Bubble for Results */
+        .clay-result-card {
+            background: linear-gradient(135deg, #E8F9FD 0%, #DFF6FF 100%);
+            border: 4px solid #B4E4FF;
             border-radius: 32px;
-            padding: 30px;
+            padding: 25px;
             text-align: center;
             margin-top: 30px;
-            box-shadow: 0px 12px 25px rgba(181, 234, 215, 0.5);
-            animation: sway 4s ease-in-out infinite;
+            box-shadow: 
+                inset 6px 6px 0px rgba(255, 255, 255, 0.9),
+                8px 12px 0px 0px #B4E4FF;
+            animation: floaty 3s ease-in-out infinite;
         }
 
-        /* Swaying cartoon stem animation */
-        @keyframes sway {
-            0%, 100% { transform: rotate(-1.5deg) translateY(0px); }
-            50% { transform: rotate(1.5deg) translateY(-8px); }
+        /* 3D Floating animation for the score bubble */
+        @keyframes floaty {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0px); }
         }
 
-        /* Typography colors */
+        /* Soft cartoon fonts and colors */
         h1 {
-            color: #FF6F91 !important;
+            color: #FF7B7B !important;
             font-weight: 900;
-            text-shadow: 2px 2px 0px #FFF, 4px 4px 0px #FFD1D1;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-        }
-        
-        h3 {
-            color: #FF80AB !important;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-shadow: 2px 2px 0px #FFE3E3, 4px 4px 0px #FFD1D1;
         }
         
         p, label {
-            color: #6C5B7B !important;
-            font-weight: 800;
+            color: #85586F !important;
+            font-weight: 700;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -105,59 +110,57 @@ def load_model():
 try:
     model = load_model()
 except FileNotFoundError:
-    st.error("⚠️ `model.pkl` not found! Put it in the same folder as `app.py`.")
+    st.error("⚠️ `model.pkl` not found! Please ensure the file is in the same directory as `app.py`.")
     st.stop()
 
 # --- HEADER SECTION ---
-st.markdown("<h1 style='text-align: center; font-size: 2.8rem; margin-bottom: 5px;'>🌸 FAIRY STUDY MEADOW 🌸</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; font-size: 1.15rem; margin-top: -10px;'>Cast a magical prediction spell on your grades! 🧚‍♀️🌷🐝✨</p>", unsafe_allow_html=True)
-st.markdown("<div style='text-align: center; font-size: 2rem; margin-bottom: 20px;'>🌹🌻🍀🦋🌼🍄🎈</div>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; font-size: 2.8rem; margin-bottom: 5px;'>🍭 STUDY LAND</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; font-size: 1.1rem; margin-top: -10px;'>Your magical 3D companion to test-prep success! 🎪✨🌈</p>", unsafe_allow_html=True)
+st.markdown("<div style='text-align: center; font-size: 1.8rem; margin-bottom: 15px;'>🧸🎒🧁🎈🍯</div>", unsafe_allow_html=True)
 
-# --- INPUT SECTION (Fairy Meadow Card) ---
-st.markdown('<div class="flower-card">', unsafe_allow_html=True)
-st.markdown("<h3 style='margin-top: 0;'>🌷 Your Study Garden Journal</h3>", unsafe_allow_html=True)
+# --- INPUT SECTION (3D Squishy Clay Card) ---
+st.markdown('<div class="clay-card">', unsafe_allow_html=True)
+st.markdown("<h3 style='color: #FF7B7B; margin-top: 0; font-weight:800;'>🎨 My Study Teleport</h3>", unsafe_allow_html=True)
 
-# Sliders configured to match the features required by the model[cite: 1]
 hours_studied = st.slider(
-    "🌸 Hours spent in the Study Patch", 
+    "✏️ Hours Studied Daily", 
     min_value=0.0, 
     max_value=24.0, 
     value=5.0, 
     step=0.5,
-    help="How long did you nurture your knowledge today?"
+    help="How many hours did you study today?"
 )
 
 sleep_hours = st.slider(
-    "🛌 Dreamy Cloud Sleep (Hours)", 
+    "🛌 Sleep Rest Time (Hours)", 
     min_value=0.0, 
     max_value=24.0, 
     value=7.0, 
     step=0.5,
-    help="Recharging your fairy wings!"
+    help="Resting time for your brainy battery!"
 )
 
 attendance_percent = st.slider(
-    "🎒 Fairy Class Attendance (%)", 
+    "🎒 Fun School Attendance (%)", 
     min_value=0.0, 
     max_value=100.0, 
     value=85.0, 
     step=1.0,
-    help="How many magical classes did you fly into?"
+    help="Percentage of classroom adventures unlocked!"
 )
 
 previous_scores = st.number_input(
-    "✨ Past Spellcast Exam Score", 
+    "💯 Last Magic Exam Score", 
     min_value=0.0, 
     max_value=100.0, 
     value=75.0, 
     step=1.0,
-    help="What was your rating on your last scroll?"
+    help="What was your score on the last exam?"
 )
-st.markdown('</div>', unsafe_allow_html=True) # Close Flower Card
+st.markdown('</div>', unsafe_allow_html=True) # Close Clay Card
 
 # --- PREDICTION ACTION ---
-if st.button("🌷 Make My Grade Bloom! 🌷", use_container_width=True):
-    # Constructing input dataframe for model compatibility[cite: 1]
+if st.button("🎈 Cast Prediction Spell! 🎈", use_container_width=True):
     input_data = pd.DataFrame([{
         "hours_studied": hours_studied,
         "sleep_hours": sleep_hours,
@@ -165,24 +168,22 @@ if st.button("🌷 Make My Grade Bloom! 🌷", use_container_width=True):
         "previous_scores": previous_scores
     }])
     
-    with st.spinner("🦋 Fairies are gathering pollen & calculating your grade... 🍯"):
+    with st.spinner("🧸 Baking your sweet results inside the 3D oven... 🧁"):
         try:
-            # Predict[cite: 1]
+            # Predict
             prediction = model.predict(input_data)[0]
             
-            # --- FLOATING COZY BLOOM CONTAINER ---
-            st.markdown('<div class="bloom-result-card">', unsafe_allow_html=True)
-            st.markdown("<h2 style='color: #FF6F91; margin: 0;'>🌸 Your Score has Bloomed! 🌸</h2>", unsafe_allow_html=True)
-            st.markdown("<p style='font-size: 1.05rem; color: #6C5B7B; margin-bottom: 0;'>The forest oracle predicts your final outcome at:</p>", unsafe_allow_html=True)
+            # --- CLAYMORPHIC RESULT DISPLAY ---
+            st.markdown('<div class="clay-result-card">', unsafe_allow_html=True)
+            st.markdown("<h2 style='color: #4bacfe; margin: 0; font-weight: 900;'>⭐️ Super Result Ready! ⭐️</h2>", unsafe_allow_html=True)
+            st.markdown("<p style='font-size: 1rem; color: #5885AF; margin-bottom: 0;'>Your predicted future score is:</p>", unsafe_allow_html=True)
             
-            # Massive pink bubble score
-            st.markdown(f"<h1 style='color: #FF80AB; font-size: 4rem; margin: 15px 0; text-shadow: 2px 2px 0px #FFF;'>🌼 {prediction:.1f}% 🌼</h1>", unsafe_allow_html=True)
+            # Inflated score value with beautiful shadow
+            st.markdown(f"<h1 style='color: #FF7B7B; font-size: 3.8rem; margin: 10px 0; text-shadow: 3px 3px 0px #FFF;'>🍬 {prediction:.1f} % 🍬</h1>", unsafe_allow_html=True)
             
-            # Pastel-toned progress indicator
             st.progress(min(max(float(prediction) / 100.0, 0.0), 1.0))
-            
-            st.markdown("<p style='font-size: 0.95rem; font-style: italic; margin-top: 15px; color: #8F819D;'>You're growing beautifully every single day! 🧚‍♀️🍯🌻</p>", unsafe_allow_html=True)
+            st.markdown("<p style='font-size: 0.9rem; font-style: italic; margin-top: 10px; color: #7B8FA1;'>Yay! You are doing absolutely amazing! 🦄🧸🍯</p>", unsafe_allow_html=True)
             st.markdown('</div>', unsafe_allow_html=True) # Close Result Card
             
         except Exception as e:
-            st.error(f"Oh dear, a thorn blocked the prediction path: {str(e)} 🥀")
+            st.error(f"Oh oops, something got tangled in the toy box: {str(e)} 😿")
